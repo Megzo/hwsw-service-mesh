@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: bookinfo-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - bookinfo.nginx.leannet.hu
+    secretName: bookinfo-nginx-tls
+  rules:
+  - host: bookinfo.nginx.leannet.hu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: productpage
+            port:
+              number: 9080
